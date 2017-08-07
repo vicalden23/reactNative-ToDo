@@ -1,14 +1,15 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://<vickialden>:<Iamvicki1>@ds163681.mlab.com:63681/yingtodo');
+mongoose.connect('mongodb://localhost/yingtodo');
 var db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('Connection open on: ds163681.mlab.com:63681/yingtodo');
+db.once('openUri', function() {
+  useMongoClient: true
+  console.log('Connection open on: mongodb://localhost/yingtodo');
 });
 
-var todoScehma = new mongoose.Schema({
+var todoSchema = new mongoose.Schema({
   todo: {type: String, required: true}
 });
 

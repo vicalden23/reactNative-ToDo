@@ -7,13 +7,13 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 2023;
 
-app.listen(2023, function() {
-  console.log('LISTENING PORT NUMBER 2023');
+app.listen(port, function() {
+  console.log('LISTENING ON PORT NUMBER ', port);
 });
 
-app.get('api/todos', function(req, res) {
+app.get('/api/todos', function(req, res) {
   Todo.find({}).exec(function(err, todos) {
     if (err) {
       res.status(500).send(err);
