@@ -1,18 +1,20 @@
 var mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/yingtodo');
-var db = mongoose.connection;
+//create connection to storage
+var db = mongoose.createConnection('mongodb://localhost/yingtodo');
 
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('openUri', function() {
+db.once('open', function() {
   useMongoClient: true
   console.log('Connection open on: mongodb://localhost/yingtodo');
 });
 
+//define schema
 var todoSchema = new mongoose.Schema({
   todo: {type: String, required: true}
 });
 
+//define model
 var Todo = mongoose.model('Todo', todoSchema);
 
 module.exports = Todo;

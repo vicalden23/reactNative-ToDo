@@ -7,13 +7,15 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var port = process.env.PORT || 2023;
+var port = process.env.PORT || 3000;
 
 app.listen(port, function() {
   console.log('LISTENING ON PORT NUMBER ', port);
 });
 
+//handle GET request for all todos
 app.get('/api/todos', function(req, res) {
+  console.log('INSIDE OF GET');
   Todo.find({}).exec(function(err, todos) {
     if (err) {
       res.status(500).send(err);
@@ -23,6 +25,7 @@ app.get('/api/todos', function(req, res) {
   });
 });
 
+//handle POST request to add todo
 app.post('/api/todos', function(req, res) {
   Todo.findOne({todo: req.body.todo})
     .exec(function(err, todo) {
