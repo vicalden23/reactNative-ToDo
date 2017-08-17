@@ -4,12 +4,14 @@ var Todo = require('./db/Todo.js');
 
 var app = express();
 
+var port = process.env.PORT || 3000;
+var ip = '127.0.0.1';
+
+app.use(express.static(__dirname + '/assets'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-var port = process.env.PORT || 3000;
-
-app.listen(port, function() {
+app.listen(port, ip, function() {
   console.log('LISTENING ON PORT NUMBER ', port);
 });
 
@@ -18,8 +20,10 @@ app.get('/api/todos', function(req, res) {
   console.log('INSIDE OF GET');
   Todo.find({}).exec(function(err, todos) {
     if (err) {
+      console.log(err);
       res.status(500).send(err);
     } else {
+      console.log(todos)
       res.status(200).send(todos);
     }
   });
