@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView
 } from 'react-native';
+import { Button } from 'react-native-elements';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -19,11 +20,32 @@ class App extends React.Component {
     };
 
     this.handleNewTodo = this.handleNewTodo.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleNewTodo(text) {
     this.setState({
       newTodo: text
+    });
+  }
+
+  handleSubmit() {
+    this.setState({
+      todos: this.state.todos.concat(this.state.newTodo)
+    });
+    this.clearInputField();
+  }
+
+  clearInputField() {
+    this.setState({
+      newTodo: ''
+    });
+  }
+
+  handleDelete(index) {
+    this.state.todos.splice(index, 1);
+    this.setState({
+      todos: this.state.todos
     });
   }
 
@@ -43,15 +65,27 @@ class App extends React.Component {
           <TextInput
             autofocus={true}
             multiline={true}
+            value={this.props.newTodo}
             onChangeText={this.handleNewTodo}
           >
-            {this.props.newTodo}
           </TextInput>
+          <Button
+            title="Add Todo"
+            onPress={this.handleSubmit}
+          />
           <Text style={styles.titleText}>My Todos</Text>
           {
             this.state.todos.map((todo, i) => {
               return (
-                <Text key={i}>{todo}</Text>
+                <View key={i}>
+                  <Text>
+                    {todo}
+                  </Text>
+                  <Button
+                    title="Remove"
+                    onPress={() => this.handleDelete(i)}
+                  />
+                </View>
               )
             })
           }
