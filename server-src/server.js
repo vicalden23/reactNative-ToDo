@@ -4,46 +4,43 @@ var Todo = require('./db/Todo.js');
 
 var app = express();
 
-var port = process.env.PORT || 3000;
-var ip = '127.0.0.1';
-
-app.use(express.static(__dirname + '/assets'));
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.listen(port, ip, function() {
-  console.log('LISTENING ON PORT NUMBER ', port);
+app.use(bodyParser.json());
+app.use(express.static(__dirname + '/client'));
+app.listen(2023, function() {
+  console.log('LISTENING PORT NUMBER 2023');
 });
 
-//handle GET request for all todos
-app.get('/api/todos', function(req, res) {
-  console.log('INSIDE OF GET');
-  Todo.find({}).exec(function(err, todos) {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    } else {
-      console.log(todos)
-      res.status(200).send(todos);
-    }
-  });
+app.get('/todos', function(req, res) {
+  Todo.find({}).exec(function(err, data) {
+    res.status(200).send(data);
+  })
 });
 
-//handle POST request to add todo
-app.post('/api/todos', function(req, res) {
+app.post('/todos', function(req, res) {
   Todo.findOne({todo: req.body.todo})
     .exec(function(err, todo) {
-      if (!todo) {
+      if(!todo) {
         var newTodo = new Todo({
           todo: req.body.todo
         });
         newTodo.save(function(err, todo) {
-          if (err) {
+          if(err) {
             res.status(500).send(err);
-          } else {
-            res.status(201).send(todo);
           }
+          res.status(201).send(todo);
         });
       }
     });
 });
+
+app.delete('/todos', function(req, res) {
+  Todo.findOne({todo: req.body.todo})
+    .remove()
+    .exec(function(err, response) {
+      if(err) {
+        res.status(500).send(err);
+      }
+      res.status(204).send(req.body.todo);
+    })
+})

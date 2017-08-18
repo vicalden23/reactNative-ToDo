@@ -15,12 +15,29 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      todos: ['Fold laundry', 'Take the dog for a walk', 'Eat ice cream'],
+      todos: [],
       newTodo: ''
     };
 
     this.handleNewTodo = this.handleNewTodo.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:2023/todos')
+      .then((allTodos) => {
+        console.log("RESPONSE FROM SERVER", allTodos);
+        allTodos.data.map((obj) => {
+          this.state.todos.push(obj.todo);
+        })
+        this.setState({
+          todos: this.state.todos
+        });
+        console.log(this.state)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
 
   handleNewTodo(text) {
@@ -33,13 +50,6 @@ class App extends React.Component {
     this.setState({
       todos: this.state.todos.concat(this.state.newTodo)
     });
-    this.clearInputField();
-  }
-
-  clearInputField() {
-    this.setState({
-      newTodo: ''
-    });
   }
 
   handleDelete(index) {
@@ -48,15 +58,6 @@ class App extends React.Component {
       todos: this.state.todos
     });
   }
-
-  // componentDidMount() {
-  //   axios.get('http://localhost:3000/api/todos')
-  //     .then((allTodos) => {
-  //       this.setState({
-  //         todos: allTodos
-  //       });
-  //     });
-  // }
 
   render() {
     return (

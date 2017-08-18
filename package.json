@@ -8,12 +8,13 @@
   "dependencies": {
     "axios": "^0.16.2",
     "bluebird": "^3.5.0",
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.17.1",
     "expo": "17.0.0",
-    "express": "^4.15.4",
-    "mongoose": "^4.11.6",
+    "express": "^4.15.2",
+    "mongojs": "^2.4.1",
+    "mongoose": "^4.9.7",
     "react": "16.0.0-alpha.6",
     "react-native": "https://github.com/expo/react-native/archive/sdk-17.0.0.tar.gz",
-    "react-native-auth0": "^1.0.3"
+    "react-native-auth0": "^1.0.4"
   }
 }
