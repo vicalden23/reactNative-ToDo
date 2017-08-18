@@ -14,7 +14,7 @@ app.listen(2023, function() {
 app.get('/todos', function(req, res) {
   Todo.find({}).exec(function(err, data) {
     res.status(200).send(data);
-  })
+  });
 });
 
 app.post('/todos', function(req, res) {
@@ -35,12 +35,13 @@ app.post('/todos', function(req, res) {
 });
 
 app.delete('/todos', function(req, res) {
+  console.log(req.body);
   Todo.findOne({todo: req.body.todo})
     .remove()
     .exec(function(err, response) {
       if(err) {
         res.status(500).send(err);
       }
-      res.status(204).send(req.body.todo);
-    })
-})
+      res.status(204).send(response);
+    });
+});

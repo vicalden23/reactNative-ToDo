@@ -57,10 +57,16 @@ class App extends React.Component {
   }
 
   handleDelete(index) {
-    this.state.todos.splice(index, 1);
-    this.setState({
-      todos: this.state.todos
-    });
+    axios.delete('http://localhost:2023/todos', {data: {todo: this.state.todos[index]}})
+      .then((oldTodo) => {
+        this.state.todos.splice(index, 1);
+        this.setState({
+          todos: this.state.todos
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   render() {
