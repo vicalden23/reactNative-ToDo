@@ -26,18 +26,16 @@ class App extends React.Component {
   componentDidMount() {
     axios.get('http://localhost:2023/todos')
       .then((allTodos) => {
-        console.log("RESPONSE FROM SERVER", allTodos);
         allTodos.data.map((obj) => {
           this.state.todos.push(obj.todo);
-        })
+        });
         this.setState({
           todos: this.state.todos
         });
-        console.log(this.state)
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   }
 
   handleNewTodo(text) {
@@ -47,9 +45,15 @@ class App extends React.Component {
   }
 
   handleSubmit() {
-    this.setState({
-      todos: this.state.todos.concat(this.state.newTodo)
-    });
+    axios.post('http://localhost:2023/todos', {todo: this.state.newTodo})
+      .then((newTodo) => {
+        this.setState({
+          todos: this.state.todos.concat(newTodo.data.todo)
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleDelete(index) {
