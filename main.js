@@ -89,6 +89,8 @@ class App extends React.Component {
               </TextInput>
             </View>
             <Button
+              fontWeight="bold"
+              raised
               title="Add Todo"
               onPress={this.handleSubmit}
             />
@@ -102,6 +104,10 @@ class App extends React.Component {
                     <Text>{todo}</Text>
                   </View>
                   <Button
+                    color="white"
+                    backgroundColor="#397af8"
+                    fontWeight="bold"
+                    raised
                     title="Completed"
                     onPress={() => this.handleDelete(i)}
                   />
