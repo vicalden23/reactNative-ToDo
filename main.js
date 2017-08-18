@@ -23,6 +23,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  //Once mounted, retrieve and display all data
   componentDidMount() {
     axios.get('http://localhost:2023/todos')
       .then((allTodos) => {
@@ -38,12 +39,14 @@ class App extends React.Component {
       });
   }
 
+  //Grab text from input field
   handleNewTodo(text) {
     this.setState({
       newTodo: text
     });
   }
 
+  //Persist and display new todo from user
   handleSubmit() {
     axios.post('http://localhost:2023/todos', {todo: this.state.newTodo})
       .then((newTodo) => {
@@ -56,6 +59,7 @@ class App extends React.Component {
       });
   }
 
+  //Remove completed todo
   handleDelete(index) {
     axios.delete('http://localhost:2023/todos', {data: {todo: this.state.todos[index]}})
       .then((oldTodo) => {
@@ -73,27 +77,32 @@ class App extends React.Component {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <TextInput
-            autofocus={true}
-            multiline={true}
-            value={this.props.newTodo}
-            onChangeText={this.handleNewTodo}
-          >
-          </TextInput>
-          <Button
-            title="Add Todo"
-            onPress={this.handleSubmit}
-          />
+          <View style={styles.rowContainer}>
+            <View style={styles.listEntry}>
+              <TextInput
+                autofocus={true}
+                multiline={true}
+                placeholder="Start typing here"
+                value={this.props.newTodo}
+                onChangeText={this.handleNewTodo}
+              >
+              </TextInput>
+            </View>
+            <Button
+              title="Add Todo"
+              onPress={this.handleSubmit}
+            />
+          </View>
           <Text style={styles.titleText}>My Todos</Text>
           {
             this.state.todos.map((todo, i) => {
               return (
-                <View key={i}>
-                  <Text>
-                    {todo}
-                  </Text>
+                <View key={i} style={styles.rowContainer}>
+                  <View style={styles.listEntry}>
+                    <Text>{todo}</Text>
+                  </View>
                   <Button
-                    title="Remove"
+                    title="Completed"
                     onPress={() => this.handleDelete(i)}
                   />
                 </View>
@@ -112,10 +121,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: 25,
+    paddingTop: 35,
   },
-  wrapper: {
-    paddingHorizontal: 15,
+  rowContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 5,
+    flexWrap: 'wrap'
+  },
+  listEntry: {
+    flexDirection: 'column',
+    maxWidth: 200,
+    flexGrow: 1
   },
   titleText: {
     fontSize: 22,
