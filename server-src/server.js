@@ -11,12 +11,14 @@ app.listen(2023, function() {
   console.log('LISTENING PORT NUMBER 2023');
 });
 
+//GET all todos
 app.get('/todos', function(req, res) {
   Todo.find({}).exec(function(err, data) {
     res.status(200).send(data);
   });
 });
 
+//POST a new todo
 app.post('/todos', function(req, res) {
   Todo.findOne({todo: req.body.todo})
     .exec(function(err, todo) {
@@ -34,6 +36,7 @@ app.post('/todos', function(req, res) {
     });
 });
 
+//DELETE a completed todo
 app.delete('/todos', function(req, res) {
   console.log(req.body);
   Todo.findOne({todo: req.body.todo})
