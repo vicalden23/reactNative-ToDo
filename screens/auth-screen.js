@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { AsyncStorage, StyleSheet, ActivityIndicator, View, Text, TextInput } from 'react-native';
+import {
+  AsyncStorage,
+  StyleSheet,
+  ActivityIndicator,
+  View,
+  Text,
+  TextInput
+} from 'react-native';
 import { Button } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 import axios from 'axios';

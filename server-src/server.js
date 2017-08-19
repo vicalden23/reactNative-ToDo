@@ -25,7 +25,6 @@ passport.use('user-login', loginUserStrategy);
 
 //Sign up a new user
 app.post('/api/signup', function(req, res, next) {
-  console.log('IN POST SIGNUP')
   return passport.authenticate('user-signup', function(err, token) {
     if (err) {
 
@@ -44,7 +43,6 @@ app.post('/api/signup', function(req, res, next) {
 
 //Login an existing user
 app.post('/api/login', function(req, res, next) {
-  console.log('IN POST LOGIN')
   return passport.authenticate('user-login', function(err, token) {
     if (err) {
       if (err.name === 'IncorrectCredentialsError') {
@@ -80,7 +78,6 @@ app.get('/api/todos', isAuthenticated, function(req, res) {
 
 //Add or remove a new todo
 app.put('/api/todos', isAuthenticated, function(req, res) {
-  console.log(req.username)
   User.update({username: req.username}, {$set: {todo: req.body.todo}}, function(err, data) {
       if (err) {
         res.status(500).send(err);
