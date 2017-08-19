@@ -1,14 +1,47 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var Todo = require('./db/Todo.js');
+var morgan = require('morgan');
+var passport = require('passport');
+var User = require('./db/Todo.js');
+
+var signupUserStrategy = require('./passport/user-signup');
 
 var app = express();
+app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + '/client'));
 app.listen(2023, function() {
   console.log('LISTENING PORT NUMBER 2023');
+});
+
+app.use(passport.initialize());
+passport.use('user-signup', signupUserStrategy);
+
+//Sign up a new user
+app.post('/api/signup', function(req, res, next) {
+  console.log('IN POST SIGNUP')
+  return passport.authenticate('user-signup', function(err, token) {
+    if (err) {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        return res.status(400).json({
+          success: false,
+          message: 'Username has already been taken'
+        });
+      }
+
+      return res.status(400).json({
+        success: false,
+        message: 'There was an error processing the form'
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      token: token
+    });
+  })(req, res, next);
 });
 
 //GET all todos
