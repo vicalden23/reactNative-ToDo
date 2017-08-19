@@ -11,15 +11,12 @@ module.exports = new Strategy(
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    console.log("ABOUT TO QUERY DB", req.body)
     User.findOne({username: req.body.username})
     .exec(function(err, user) {
       if (err) {
         return done(err);
       }
       if(!user) {
-        console.log("ABOUT TO CREATE A NEW USER")
-
         return bcrypt.genSalt(10)
           .then(function(salt) {
             return bcrypt.hash(req.body.password.trim(), salt);

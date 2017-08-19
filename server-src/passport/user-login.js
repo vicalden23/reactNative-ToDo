@@ -11,7 +11,6 @@ module.exports = new Strategy(
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    console.log("ABOUT TO QUERY DB", req.body)
     User.findOne({username: req.body.username})
     .exec(function(err, user) {
       if (err) {

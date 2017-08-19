@@ -1,7 +1,8 @@
 var jwt = require('jsonwebtoken');
 var User = require('../db/Todo.js');
 
-var isAuthenticated = function(req, res, next) {
+var isAuthenticated = (req, res, next) => {
+  console.log("INSIDE OF isAuthenticated", req)
   if (!req.header('x-access-token')) {
     return res.status(401).send({
       success: false,
@@ -23,9 +24,9 @@ var isAuthenticated = function(req, res, next) {
         });
       }
 
-      var userId = decodedToken.sub;
+      var username = decodedToken.user;
 
-      User.findOne({_id: userId})
+      User.findOne({username: username})
         .exec(function(err, user) {
           if (err) {
             return res.status(500).send({
@@ -39,7 +40,7 @@ var isAuthenticated = function(req, res, next) {
               message: 'Please sign up'
             });
           }
-          req.userId = userId;
+          req.username = username;
           return next();
         });
     });

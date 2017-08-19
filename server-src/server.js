@@ -7,6 +7,8 @@ var User = require('./db/Todo.js');
 var signupUserStrategy = require('./passport/user-signup');
 var loginUserStrategy = require('./passport/user-login');
 
+var isAuthenticated = require('./middleware/is-authenticated');
+
 var app = express();
 app.use(morgan('dev'));
 
@@ -66,9 +68,14 @@ app.post('/api/login', function(req, res, next) {
 });
 
 //GET all todos
-app.get('/todos', function(req, res) {
-  Todo.find({}).exec(function(err, data) {
-    res.status(200).send(data);
+app.get('/api/todos', isAuthenticated, function(req, res) {
+  console.log("I AM AUTHENTICATED", req.username)
+  User.findOne({username: req.username}).exec(function(err, user) {
+    if (err) {
+      console.log(err);
+    }
+    console.log('THIS IS THE USER', user)
+    res.status(200).send(user.todo);
   });
 });
 
