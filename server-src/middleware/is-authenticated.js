@@ -2,7 +2,6 @@ var jwt = require('jsonwebtoken');
 var User = require('../db/Todo.js');
 
 var isAuthenticated = (req, res, next) => {
-  console.log("INSIDE OF isAuthenticated", req)
   if (!req.header('x-access-token')) {
     return res.status(401).send({
       success: false,
