@@ -25,7 +25,7 @@ module.exports = new Strategy(
             var newUser = new User({
               username: req.body.username.trim(),
               password: hashedPassword,
-              todo: '[]'
+              todo: 'Welcome to Todo It'
             });
             newUser.save()
               .then(function(user) {

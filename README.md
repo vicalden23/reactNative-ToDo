@@ -13,3 +13,9 @@ Basic todo app for Ying coding challenge
 2. cd into cloned directory and run `npm install`
 3. cd into server-src and run `nodemon server.js ` or `node server.js` to start server
 4. open project in IOS simulator in Expo XDE
+
+## Tickets/Back log
+
+1. Create logout button
+2. Auto re-direct to main page if token is present
+3. Clear text input field after adding todo
