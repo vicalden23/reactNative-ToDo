@@ -5,6 +5,7 @@ var passport = require('passport');
 var User = require('./db/Todo.js');
 
 var signupUserStrategy = require('./passport/user-signup');
+var loginUserStrategy = require('./passport/user-login');
 
 var app = express();
 app.use(morgan('dev'));
@@ -18,16 +19,36 @@ app.listen(2023, function() {
 
 app.use(passport.initialize());
 passport.use('user-signup', signupUserStrategy);
+passport.use('user-login', loginUserStrategy);
 
 //Sign up a new user
 app.post('/api/signup', function(req, res, next) {
   console.log('IN POST SIGNUP')
   return passport.authenticate('user-signup', function(err, token) {
     if (err) {
-      if (err.name === 'SequelizeUniqueConstraintError') {
+
+      return res.status(400).json({
+        success: false,
+        message: 'There was an error processing the form'
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      token: token
+    });
+  })(req, res, next);
+});
+
+//Login an existing user
+app.post('/api/login', function(req, res, next) {
+  console.log('IN POST LOGIN')
+  return passport.authenticate('user-login', function(err, token) {
+    if (err) {
+      if (err.name === 'IncorrectCredentialsError') {
         return res.status(400).json({
           success: false,
-          message: 'Username has already been taken'
+          message: err.message
         });
       }
 
