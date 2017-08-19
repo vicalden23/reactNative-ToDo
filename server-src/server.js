@@ -69,32 +69,25 @@ app.post('/api/login', function(req, res, next) {
 
 //GET all todos
 app.get('/api/todos', isAuthenticated, function(req, res) {
-  console.log("I AM AUTHENTICATED", req.username)
-  User.findOne({username: req.username}).exec(function(err, user) {
-    if (err) {
-      console.log(err);
-    }
-    console.log('THIS IS THE USER', user)
-    res.status(200).send(user.todo);
-  });
+  User.findOne({username: req.username})
+    .exec(function(err, user) {
+      if (err) {
+        console.log(err);
+      }
+      res.status(200).send(user.todo);
+    });
 });
 
-//POST a new todo
-app.post('/todos', function(req, res) {
-  Todo.findOne({todo: req.body.todo})
-    .exec(function(err, todo) {
-      if(!todo) {
-        var newTodo = new Todo({
-          todo: req.body.todo
-        });
-        newTodo.save(function(err, todo) {
-          if(err) {
-            res.status(500).send(err);
-          }
-          res.status(201).send(todo);
-        });
+//Add or remove a new todo
+app.put('/api/todos', isAuthenticated, function(req, res) {
+  console.log(req.username)
+  User.update({username: req.username}, {$set: {todo: req.body.todo}}, function(err, data) {
+      if (err) {
+        res.status(500).send(err);
       }
-    });
+      res.status(200).send(req.body.todo);
+    }
+  )
 });
 
 //DELETE a completed todo
