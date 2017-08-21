@@ -8,6 +8,7 @@ import {
   ScrollView
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 
 class TodoScreen extends React.Component {
@@ -21,6 +22,7 @@ class TodoScreen extends React.Component {
 
     this.handleNewTodo = this.handleNewTodo.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
   }
 
   //Once mounted, retrieve and display all data
@@ -60,6 +62,16 @@ class TodoScreen extends React.Component {
       .catch((err) => {
         console.log(err);
       });
+  }
+
+  handleSignOut() {
+    const action = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: 'AuthScreen' })
+      ]
+    });
+    this.props.navigation.dispatch(action);
   }
 
   //Remove completed todo
@@ -120,6 +132,14 @@ class TodoScreen extends React.Component {
               )
             })
           }
+          <Button
+            color="white"
+            backgroundColor="#397af8"
+            fontWeight="bold"
+            raised
+            title="Sign Out"
+            onPress={this.handleSignOut}
+          />
         </View>
       </ScrollView>
     );

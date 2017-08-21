@@ -28,7 +28,23 @@ class App extends React.Component {
 
   componentDidMount() {
     this.setState({isAppReady: true});
+
+    if (this.state.isAppReady) {
+      if (this.state.isLoggedIn) {
+        this.navigateTo('TodoScreen');
+      } else {
+        this.navigateTo('AuthScreen');
+      }
+    }
   }
+
+  navigateTo = (routeName) => {
+    const actionToDispatch = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName })]
+    });
+    this.props.navigation.dispatch(actionToDispatch);
+  };
 
   setIdToken = (idToken) => {
     if (idToken === null) {

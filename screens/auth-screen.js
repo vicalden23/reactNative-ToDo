@@ -46,7 +46,6 @@ class AuthScreen extends Component {
       this.setState({isLoggingIn: false});
     } else if (res.status === 201) {
 
-      console.log(res);
       // Remove error message if there was one.
       this.setState({error: null});
       // Put the token in our state so we do not need to repeatedly get it from storage
