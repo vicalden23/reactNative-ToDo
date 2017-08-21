@@ -17,6 +17,4 @@ Basic todo app for Ying coding challenge
 ## Tickets/Back log
 
 1. Form validation
-2. Create logout button
-3. Auto re-direct to main page if token is present
-4. Clear text input field after adding todo
+2. Clear text input field after adding todo
